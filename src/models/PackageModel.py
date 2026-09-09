@@ -1,4 +1,4 @@
-from sdks.novavision.src.base.capsule import Package, Configs, Inputs, Outputs, Request, Response, Config
+from sdks.novavision.src.base.model import Package, Configs, Inputs, Outputs, Request, Response, Config
 from pydantic import Field
 from typing import Union, Literal, Optional
 from sdks.novavision.src.base.model import InputImage, OutputImage, OutputDetections
