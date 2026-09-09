@@ -81,6 +81,11 @@ class ForegroundDetection2Request(Request):
     inputs: Optional[ForegroundDetection2Inputs]
     configs: ForegroundDetection2Configs
 
+    class Config:
+        json_schema_extra = {
+            "target": "configs"
+        }
+
 class ForegroundDetection2Response(Response):
     outputs: ForegroundDetection2Outputs
 
@@ -90,11 +95,25 @@ class ForegroundDetection2Executor(Config):
     type: Literal["object"] = "object"
     field: Literal["option"] = "option"
 
+    class Config:
+        title = "Foreground Detection"
+        json_schema_extra = {
+            "target": {
+                "value": 0
+            }
+        }
+
 class ConfigExecutor(Config):
     name: Literal["ConfigExecutor"] = "ConfigExecutor"
     value: Union[ForegroundDetection2Executor]
     type: Literal["executor"] = "executor"
     field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
+
+    class Config:
+        title = "Task"
+        json_schema_extra = {
+            "target": "value"
+        }
 
 class PackageConfigs(Configs):
     executor: ConfigExecutor
