@@ -1,0 +1,54 @@
+from sdks.novavision.src.base.capsule import Package, Configs, Inputs, Outputs, Request, Response, Config
+from pydantic import Field
+from typing import Union, Literal, Optional
+from sdks.novavision.src.base.model import InputImage, OutputImage, OutputDetections
+
+class Threshold(Config):
+    name: Literal["threshold"] = "threshold"
+    value: int = Field(default=30, ge=5, le=255)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+
+class MinContourArea(Config):
+    name: Literal["minContourArea"] = "minContourArea"
+    value: float = Field(default=500.0, ge=0.0, le=100000.0)
+    type: Literal["number"] = "number"
+    field: Literal["textInput"] = "textInput"
+
+class ForegroundDetection2Inputs(Inputs):
+    inputImage: InputImage
+
+class ForegroundDetection2Configs(Configs):
+    threshold: Threshold
+    minContourArea: MinContourArea
+
+class ForegroundDetection2Outputs(Outputs):
+    outputImage: OutputImage
+    outputDetections: OutputDetections
+
+class ForegroundDetection2Request(Request):
+    inputs: Optional[ForegroundDetection2Inputs]
+    configs: ForegroundDetection2Configs
+
+class ForegroundDetection2Response(Response):
+    outputs: ForegroundDetection2Outputs
+
+class ForegroundDetection2Executor(Config):
+    name: Literal["ForegroundDetection2"] = "ForegroundDetection2"
+    value: Union[ForegroundDetection2Request, ForegroundDetection2Response]
+    type: Literal["object"] = "object"
+    field: Literal["option"] = "option"
+
+class ConfigExecutor(Config):
+    name: Literal["ConfigExecutor"] = "ConfigExecutor"
+    value: Union[ForegroundDetection2Executor]
+    type: Literal["executor"] = "executor"
+    field: Literal["dependentDropdownlist"] = "dependentDropdownlist"
+
+class PackageConfigs(Configs):
+    executor: ConfigExecutor
+
+class PackageModel(Package):
+    configs: PackageConfigs
+    type: Literal["capsule"] = "capsule"
+    name: Literal["ForegroundDetection2"] = "ForegroundDetection2"
